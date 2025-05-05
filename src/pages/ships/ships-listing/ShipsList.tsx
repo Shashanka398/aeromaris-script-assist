@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getShips } from '../../api/spacex';
+import { getShips } from '../../../api/spacex';
 import { notifications } from '@mantine/notifications';
-import useTableFilter from '../../hooks/useTableFilter';
-import TableWrapper from '../../components/ui-components/Table-wrapper';
-import Layout from '../../components/Layout/Layout';
+import useTableFilter from '../../../hooks/useTableFilter';
+import TableWrapper from '../../../components/ui-components/Table-wrapper';
+import Layout from '../../../components/Layout/Layout';
 import { Badge } from '@mantine/core';
 import styles from './ShipsList.module.scss';
 import { useQuery } from '@tanstack/react-query';
@@ -20,35 +20,29 @@ interface Ship {
 
 export default function ShipsList() {
 
-  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortField, setSortField] = useState<keyof Ship>('name');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
-   const { data:ships, isLoading, error } = useQuery('ships', getShips)
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchShips = async () => {
-      try {
-        const response = await getShips();
-        setShips(response.data);
-      } catch (error) {
-        notifications.show({
-          title: 'Error while loading ships!!',
-          message: 'Not able to load ship details please try later!!!',
-          radius: 'md',
-          autoClose: 5000
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
+  const { data, isLoading, isError } = useQuery<Ship[]>(['ships'], async () => {
+    const response = await getShips();
+    return response.data;
+  });
 
-    fetchShips();
-  }, []);
+  useEffect(() => {
+    if (isError) {
+      notifications.show({
+        title: 'Error while loading ships!!',
+        message: 'Not able to load ship details please try later!!!',
+        radius: 'md',
+        autoClose: 5000
+      });
+    }
+  }, [isError]);
 
   const { filteredAndSortedData: filteredAndSortedShips } = useTableFilter<Ship>({
-    data: ships,
+    data: data || [],
     searchQuery,
     sortField,
     sortDirection,
@@ -94,7 +88,7 @@ export default function ShipsList() {
       <TableWrapper<Ship>
         data={filteredAndSortedShips}
         columns={columns}
-        loading={loading}
+        loading={isLoading}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         sortField={sortField}

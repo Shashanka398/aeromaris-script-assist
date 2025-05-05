@@ -10,9 +10,9 @@ export interface Item{
     image:string
 }
 interface CardsCarouselProps{
-   items:Item[]
+   items:Item[],hideTitle?:boolean
 }
-const CardsCarousel = ({items}:CardsCarouselProps) => {
+const CardsCarousel = ({items,hideTitle=false}:CardsCarouselProps) => {
   const theme = useMantineTheme();
   const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
 
@@ -27,9 +27,9 @@ const CardsCarousel = ({items}:CardsCarouselProps) => {
             alt={`AeroSpace Image ${index + 1}`}
           />
         </Card.Section>
-        <Group position="apart" mt="md" mb="xs">
-          <Text weight={500}> {item.title}</Text>
-        </Group>
+        {!hideTitle &&<Group position="apart" mt="md" mb="xs">
+             <Text weight={500}> {item.title}</Text>
+        </Group>}
       </Card>
     </Carousel.Slide>
   ));

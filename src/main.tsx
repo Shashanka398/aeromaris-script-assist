@@ -8,12 +8,14 @@ import { useLocalStorage } from '@mantine/hooks';
 import { lightTheme, darkTheme } from './theme/theme';
 import { useThemeStore } from './store/theme.store';
 import App from './App';
-import Home from './pages/Home/Home';
-import Login from './pages/Login/Login';
-import ShipsList from './pages/ShipsList/ShipsList';
-import ShipDetail from './pages/ShipDetail/ShipDetail';
+import Home from './pages/home/Home';
+import Login from './pages/login/Login';
+import ShipsList from './pages/ships/ships-listing/ShipsList';
+import ShipDetail from './pages/ships/ship-details/ShipDetail';
 import ProtectedRoute from './components/ProtectedRoute';
-import NotFound from './pages/NotFound/NotFound';
+import NotFound from './components/ui-components/not-found/NotFound';
+import RocketsList from './pages/rockets/RocketList';
+import RocketDetail from './pages/rockets/RocketDetails';
 
 export const routes = [
 	{
@@ -46,13 +48,22 @@ export const routes = [
 				)
 			},
 			{
-				path: '/privacy',
-				element: <div>Privacy Policy</div>
+				path: '/rockets',
+				element: (
+					<ProtectedRoute>
+						<RocketsList />
+					</ProtectedRoute>
+				)
 			},
 			{
-				path: '/terms',
-				element: <div>Terms of Service</div>
-			}
+				path: '/rocket/:id',
+				element: (
+					<ProtectedRoute>
+						<RocketDetail />
+					</ProtectedRoute>
+				)
+			},
+			
 		]
 	}
 ];

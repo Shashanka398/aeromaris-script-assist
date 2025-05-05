@@ -17,8 +17,8 @@ import {
   useMantineTheme
 } from '@mantine/core';
 import { IconArrowLeft, IconAnchor, IconCalendar, IconWeight, IconMapPin, IconRocket } from '@tabler/icons-react';
-import { getShipById } from '../../api/spacex';
-import Layout from '../../components/Layout/Layout';
+import { getShipById } from '../../../api/spacex';
+import Layout from '../../../components/Layout/Layout';
 
 interface Ship {
   id: string;

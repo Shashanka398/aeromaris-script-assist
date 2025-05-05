@@ -34,6 +34,7 @@ const Header = () => {
   const links = [
     { link: '/', label: 'Home' },
     { link: '/ships', label: 'Ships', protected: true },
+    {link:'/rockets', label: 'Rockets', protected: true}
   ];
 
   const items = links
