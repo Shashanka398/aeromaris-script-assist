@@ -1,0 +1,14 @@
+@import '../../../styles/abstracts';
+
+.shipLink {
+  color: var(--primary-color);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  font-family: var(--font-family);
+
+  &:hover {
+    color: var(--primary-color-dark);
+    text-decoration: underline;
+  }
+} 
