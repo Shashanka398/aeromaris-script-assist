@@ -8,23 +8,17 @@ import {
   Group,
   Stack,
   Paper,
-  Grid,
   Anchor,
   Center,
-  Loader,
   Button,
   SimpleGrid,
   RingProgress,
   Progress,
   Box,
-  rem,
   useMantineTheme,
 } from "@mantine/core";
 import {
   IconArrowLeft,
-  IconRocket,
-  IconCurrencyDollar,
-  IconCalendar,
   IconExternalLink,
 } from "@tabler/icons-react";
 import { getRocketById } from "../../api/spacex";

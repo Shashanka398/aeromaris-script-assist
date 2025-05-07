@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
   Container, 
@@ -9,7 +9,6 @@ import {
   Button, 
   Stack, 
   Title, 
-  Skeleton, 
   Grid, 
   Paper, 
   Card,

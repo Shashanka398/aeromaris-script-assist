@@ -5,23 +5,20 @@ import {
   Title, 
   Grid,
   Card, 
-  Image, 
   Text, 
   Badge, 
   Group, 
   Stack,
-  Center,
+
   useMantineTheme,
   Button,
   Tabs,
-  ScrollArea,
   Box
 } from '@mantine/core';
 import { getRockets } from '../../api/spacex';
 import Layout from '../../components/Layout/Layout';
 import CardsCarousel from '../../components/ui-components/CardsCarousel';
 import Loading from '../../components/ui-components/Loading';
-import { Tab } from '@mantine/core/lib/Tabs/Tab/Tab';
 import '../../styles/abstracts/_fonts.scss';
 import { IconBadge4k, IconRocket, IconShip } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
