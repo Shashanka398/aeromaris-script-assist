@@ -1,4 +1,4 @@
-import { Button, Group, Title, useMantineTheme, Text, Grid, Skeleton, Image } from "@mantine/core";
+import { Button, Group, Title, useMantineTheme, Text, Grid, Skeleton, Image, Stack } from "@mantine/core";
 import { IconExternalLink } from "@tabler/icons-react";
 import { ReactNode } from "react";
 import { Link } from "react-router-dom";
@@ -23,10 +23,12 @@ const TitleContainer=({
     
     const contentContainer = (
         <Grid.Col md={7} > 
+        <Stack>
             <Title
                 order={1}
                 size="3rem"
                 mb="md"
+                ml="xs"
                 sx={{
                     color: theme.colorScheme === 'dark' ? theme.white : theme.black,
                     fontWeight: 900,
@@ -34,10 +36,13 @@ const TitleContainer=({
             >
                 {title} <span style={{ color: theme.colors.brand[6] }}>{context}</span>
             </Title>
-            <Text>
+            <Text  mb="md" size="md">
                 {titleDescription}
             </Text>
-            <Group>
+
+        </Stack>
+        <Stack>
+             <Group >
                 <Link to="/ships" style={{ textDecoration: 'none' }}>
                     <Button size="md" leftIcon={contextIcon}>
                         {context}
@@ -55,6 +60,10 @@ const TitleContainer=({
                     Visit AeroMaris {context}
                 </Button>
             </Group>
+
+        </Stack>
+            
+           
         </Grid.Col>
     );
 

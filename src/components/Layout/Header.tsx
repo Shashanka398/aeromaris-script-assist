@@ -43,6 +43,7 @@ const Header = () => {
     .map((link) => (
        <Group
         spacing={10}
+        key={link.label}
         style={{padding:"10px"}}
         >
       <Link 

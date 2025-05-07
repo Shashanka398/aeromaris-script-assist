@@ -56,18 +56,17 @@ const Home = () => {
                 <TitleContainer
                 reverseOrder
                  context='Rockets'
-                 contextIcon={<IconShip size={20} />}
+                 contextIcon={<IconRocket size={20} />}
                  contextLink='https://www.spacex.com'
                  title='Explore '
-                 titleDescription={`Discover the fleet that supports SpaceX's ambitious missions. From drone ships that land rockets
-                  at sea to recovery vessels that help bring astronauts home safely, explore the vessels
-                  that make reusable spaceflight possible.`}
+                 titleDescription={`Explore the rockets that carry humanity’s dreams beyond Earth. From reusable boosters to powerful launch systems, learn how each rocket contributes to aerospace innovation.
+Get insights into their technology, performance, and the missions they support.`}
                  isLoading={loading}
                 contextImages={RocketImages}
                 />
                 <TitleContainer
                  context='Ships'
-                 contextIcon={<IconRocket size={20} />}
+                 contextIcon={<IconShip size={20} />}
                  contextLink='https://www.spacex.com'
                  title='Explore '
                  titleDescription={`Discover the fleet that supports SpaceX's ambitious missions. From drone ships that land rockets

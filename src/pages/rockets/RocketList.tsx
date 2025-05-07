@@ -39,28 +39,35 @@ interface Rocket {
 }
 
 export default function RocketsList() {
-
-
   const [activeTab, setActiveTab] = useState<string | null>('all');
   const theme = useMantineTheme();
   const navigate = useNavigate();
-   const { data:rockets, isLoading, isError } = useQuery<Rocket[]>(['ships'], async () => {
-      const response = await getRockets();
-      return response.data;
-    });
+
+  const { data: rockets, isLoading, isError, error } = useQuery<Rocket[]>({
+    queryKey: ['rockets'],
+    queryFn: async () => {
+      try {
+        const response = await getRockets();
+        return response.data;
+      } catch (error) {
+        throw new Error('Failed to fetch rockets data');
+      }
+    },
+    retry: 1,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
    
- useEffect(() => {
+  useEffect(() => {
     if (isError) {
       notifications.show({
-        title: 'Error while loading rockets!!',
-        message: 'Not able to load rocket listng please try later!!!',
+        title: 'Error while loading rockets',
+        message: error instanceof Error ? error.message : 'Unable to load rocket listing. Please try again later.',
+        color: 'red',
         radius: 'md',
         autoClose: 5000
       });
     }
-  }, [isError]);
-
-
+  }, [isError, error]);
 
   const filteredRockets = rockets?.filter((rocket) => {
     if (activeTab === 'all') return true;

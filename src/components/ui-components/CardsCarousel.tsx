@@ -17,7 +17,7 @@ const CardsCarousel = ({items,hideTitle=false,imageHiegth=400}:CardsCarouselProp
   const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
 
   const slides = items.map((item, index) => (
-    <Carousel.Slide key={index}>
+    <Carousel.Slide key={index} >
       <Card shadow="sm" padding="lg" radius="md" withBorder>
         <Card.Section>
           <Image

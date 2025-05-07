@@ -107,13 +107,13 @@ export default function ShipDetail() {
                   <Divider />
                   
                   <Grid>
-                    <Grid.Col span={6}>
+                   
                       <Group spacing="xs">
                         <IconMapPin size={20} color={theme.colors.blue[6]} />
                         <Text fw={500}>Home Port:</Text>
                       </Group>
-                      <Text ml={24}>{ship.home_port}</Text>
-                    </Grid.Col>
+                      <Text ml={24}  color="dimmed">{ship.home_port}</Text>
+            
                     
                     <Grid.Col span={6}>
                       <Group spacing="xs">
