@@ -1,26 +1,32 @@
-
-import { useParams, useNavigate } from 'react-router-dom';
-import { 
-  Container, 
-  Image, 
-  Text, 
-  Group, 
-  Badge, 
-  Button, 
-  Stack, 
-  Title, 
-  Grid, 
-  Paper, 
+import { useParams, useNavigate } from "react-router-dom";
+import {
+  Container,
+  Image,
+  Text,
+  Group,
+  Badge,
+  Button,
+  Stack,
+  Title,
+  Grid,
+  Paper,
   Card,
   Divider,
-  useMantineTheme
-} from '@mantine/core';
-import { IconArrowLeft, IconAnchor, IconCalendar, IconWeight, IconMapPin, IconRocket } from '@tabler/icons-react';
-import { getShipById } from '../../../api/spacex';
-import Layout from '../../../components/Layout/Layout';
-import NotFound from '../../../components/ui-components/NotFound';
-import { useQuery } from '@tanstack/react-query';
-import DetailsLoading from '../../../components/ui-components/DetailsLoading';
+  useMantineTheme,
+} from "@mantine/core";
+import {
+  IconArrowLeft,
+  IconAnchor,
+  IconCalendar,
+  IconWeight,
+  IconMapPin,
+  IconRocket,
+} from "@tabler/icons-react";
+import { getShipById } from "../../../api/spacex";
+import Layout from "../../../components/Layout/Layout";
+import NotFound from "../../../components/ui-components/NotFound";
+import { useQuery } from "@tanstack/react-query";
+import DetailsLoading from "../../../components/ui-components/DetailsLoading";
 
 interface Ship {
   id: string;
@@ -44,31 +50,31 @@ export default function ShipDetail() {
   const navigate = useNavigate();
 
   const theme = useMantineTheme();
-   const { data: ship, isLoading, isError } = useQuery<Ship>(['shipDetails', id], async ({ queryKey }) => {
-      const [, shipId] = queryKey;
-      if (typeof shipId === 'string') {
-        const response = await getShipById(shipId);
-        return response.data;
-      }
-      throw new Error('Invalid ship ID');
-    });
+  const {
+    data: ship,
+    isLoading,
+    isError,
+  } = useQuery<Ship>(["shipDetails", id], async ({ queryKey }) => {
+    const [, shipId] = queryKey;
+    if (typeof shipId === "string") {
+      const response = await getShipById(shipId);
+      return response.data;
+    }
+    throw new Error("Invalid ship ID");
+  });
 
-
-
-
- 
   return (
     <Layout>
       {isLoading ? (
-       <DetailsLoading navigateTo={'/ships'} backToText={'ships'} />
+        <DetailsLoading navigateTo={"/ships"} backToText={"ships"} />
       ) : !ship ? (
         <NotFound isDetailsPage={true} />
       ) : (
         <Container size="lg" py="md">
-         <Button 
-            variant="light" 
-            leftIcon={<IconArrowLeft size={16} />} 
-            onClick={() => navigate('/ships')} 
+          <Button
+            variant="light"
+            leftIcon={<IconArrowLeft size={16} />}
+            onClick={() => navigate("/ships")}
             mb="xl"
             color="brand"
           >
@@ -79,64 +85,79 @@ export default function ShipDetail() {
             <Grid gutter={0}>
               <Grid.Col md={7}>
                 <Image
-                  src={ship.image || ''}
+                  src={ship.image || ""}
                   height={400}
                   alt={ship.name}
                   fit="cover"
-                  sx={{ 
+                  sx={{
                     borderTopLeftRadius: theme.radius.md,
-                    borderBottomLeftRadius: theme.fn.largerThan('md') ? theme.radius.md : 0,
-                    borderTopRightRadius: theme.fn.smallerThan('md') ? theme.radius.md : 0
+                    borderBottomLeftRadius: theme.fn.largerThan("md")
+                      ? theme.radius.md
+                      : 0,
+                    borderTopRightRadius: theme.fn.smallerThan("md")
+                      ? theme.radius.md
+                      : 0,
                   }}
                 />
               </Grid.Col>
-              
+
               <Grid.Col md={5}>
                 <Stack spacing="lg" p="xl" h="100%">
                   <div>
                     <Group position="apart">
                       <Title order={2}>{ship.name}</Title>
-                      <Badge color={ship.active ? 'green' : 'red'} size="lg" variant="filled">
-                        {ship.active ? 'Active' : 'Inactive'}
+                      <Badge
+                        color={ship.active ? "green" : "red"}
+                        size="lg"
+                        variant="filled"
+                      >
+                        {ship.active ? "Active" : "Inactive"}
                       </Badge>
                     </Group>
-                    <Text color="dimmed" size="lg">{ship.type}</Text>
+                    <Text color="dimmed" size="lg">
+                      {ship.type}
+                    </Text>
                   </div>
-                  
+
                   <Divider />
-                  
-                  <Grid>
-                   
-                      <Group spacing="xs">
+
+                  <Stack spacing="sm">
+                    <Group spacing="xl" position="apart">
+                      <Group>
                         <IconMapPin size={20} color={theme.colors.blue[6]} />
                         <Text fw={500}>Home Port:</Text>
                       </Group>
-                      <Text ml={24}  color="dimmed">{ship.home_port}</Text>
-            
-                    
-                    <Grid.Col span={6}>
-                      <Group spacing="xs">
+
+                      <Text color="dimmed">{ship.home_port}</Text>
+                    </Group>
+
+                    <Group spacing="xl" position="apart">
+                      <Group>
                         <IconCalendar size={20} color={theme.colors.green[6]} />
                         <Text fw={500}>Year Built:</Text>
                       </Group>
-                      <Text ml={24}>{ship.year_built || 'Unknown'}</Text>
-                    </Grid.Col>
-                    
-                    <Grid.Col span={6}>
-                      <Group spacing="xs">
+
+                      <Text color="dimmed">{ship.year_built || "Unknown"}</Text>
+                    </Group>
+
+                    <Group spacing="xs" position="apart">
+                      <Group>
                         <IconWeight size={20} color={theme.colors.orange[6]} />
                         <Text fw={500}>Mass:</Text>
                       </Group>
-                      <Text ml={24}>
-                        {ship.mass_kg ? `${ship.mass_kg} kg (${ship.mass_lbs} lbs)` : 'Unknown'}
+
+                      <Text color="dimmed">
+                        {ship.mass_kg
+                          ? `${ship.mass_kg} kg (${ship.mass_lbs} lbs)`
+                          : "Unknown"}
                       </Text>
-                    </Grid.Col>
-                  </Grid>
+                    </Group>
+                  </Stack>
                 </Stack>
               </Grid.Col>
             </Grid>
           </Paper>
-          
+
           <Grid mt="xl" gutter="xl">
             <Grid.Col md={6}>
               <Card shadow="xs" p="lg" radius="md" withBorder h="100%">
@@ -146,7 +167,7 @@ export default function ShipDetail() {
                     <IconAnchor size={20} />
                   </Group>
                 </Card.Section>
-                
+
                 <Group mt="md" spacing="xs">
                   {ship.roles && ship.roles.length > 0 ? (
                     ship.roles.map((role, index) => (
@@ -160,7 +181,7 @@ export default function ShipDetail() {
                 </Group>
               </Card>
             </Grid.Col>
-            
+
             <Grid.Col md={6}>
               <Card shadow="xs" p="lg" radius="md" withBorder h="100%">
                 <Card.Section withBorder inheritPadding py="xs">
@@ -169,13 +190,15 @@ export default function ShipDetail() {
                     <IconRocket size={20} />
                   </Group>
                 </Card.Section>
-                
+
                 <Stack mt="md" spacing="xs">
                   {ship.missions && ship.missions.length > 0 ? (
                     ship.missions.map((mission, index) => (
                       <Group key={index} position="apart">
                         <Text>{mission.name}</Text>
-                        <Badge color="grape" size="sm">Flight: {mission.flight}</Badge>
+                        <Badge color="grape" size="sm">
+                          Flight: {mission.flight}
+                        </Badge>
                       </Group>
                     ))
                   ) : (
@@ -189,4 +212,4 @@ export default function ShipDetail() {
       )}
     </Layout>
   );
-} 
+}
