@@ -34,7 +34,7 @@ export default function ShipsList() {
     if (isError) {
       notifications.show({
         title: 'Error while loading ships!!',
-        message: 'Not able to load ship details please try later!!!',
+        message: 'Not able to load ship listng please try later!!!',
         radius: 'md',
         autoClose: 5000
       });

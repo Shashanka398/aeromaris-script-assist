@@ -19,6 +19,9 @@ import {
 import { IconArrowLeft, IconAnchor, IconCalendar, IconWeight, IconMapPin, IconRocket } from '@tabler/icons-react';
 import { getShipById } from '../../../api/spacex';
 import Layout from '../../../components/Layout/Layout';
+import NotFound from '../../../components/ui-components/NotFound';
+import { useQuery } from '@tanstack/react-query';
+import DetailsLoading from '../../../components/ui-components/DetailsLoading';
 
 interface Ship {
   id: string;
@@ -40,83 +43,30 @@ interface Ship {
 export default function ShipDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [ship, setShip] = useState<Ship | null>(null);
-  const [loading, setLoading] = useState(true);
+
   const theme = useMantineTheme();
-
-  useEffect(() => {
-    const fetchShip = async () => {
-      try {
-        if (id) {
-          const response = await getShipById(id);
-          setShip(response.data);
-        }
-      } catch (error) {
-        console.error('Error fetching ship:', error);
-      } finally {
-        setLoading(false);
+   const { data: ship, isLoading, isError } = useQuery<Ship>(['shipDetails', id], async ({ queryKey }) => {
+      const [, shipId] = queryKey;
+      if (typeof shipId === 'string') {
+        const response = await getShipById(shipId);
+        return response.data;
       }
-    };
+      throw new Error('Invalid ship ID');
+    });
 
-    fetchShip();
-  }, [id]);
 
-  const renderLoading = () => (
-    <Container size="lg">
-      <Button variant="light" leftIcon={<IconArrowLeft size={16} />} onClick={() => navigate('/ships')} mb="xl">
-        Back to Ships
-      </Button>
-      
-      <Paper p="md" withBorder>
-        <Skeleton height={400} radius="md" mb="xl" />
-        <Skeleton height={50} width="50%" mb="xl" />
-        <Grid>
-          <Grid.Col md={6}>
-            <Stack spacing="md">
-              <Skeleton height={30} />
-              <Skeleton height={30} />
-              <Skeleton height={30} />
-            </Stack>
-          </Grid.Col>
-          <Grid.Col md={6}>
-            <Stack spacing="md">
-              <Skeleton height={30} />
-              <Skeleton height={30} />
-              <Skeleton height={100} />
-            </Stack>
-          </Grid.Col>
-        </Grid>
-      </Paper>
-    </Container>
-  );
 
-  const renderNotFound = () => (
-    <Container size="lg" py="xl">
-      <Paper p="xl" withBorder>
-        <Stack align="center" spacing="md">
-          <Title order={2}>Ship Not Found</Title>
-          <Text>We couldn't find the ship you're looking for.</Text>
-          <Button 
-            variant="filled" 
-            leftIcon={<IconArrowLeft size={16} />} 
-            onClick={() => navigate('/ships')}
-          >
-            Return to Ships List
-          </Button>
-        </Stack>
-      </Paper>
-    </Container>
-  );
 
+ 
   return (
     <Layout>
-      {loading ? (
-        renderLoading()
+      {isLoading ? (
+       <DetailsLoading navigateTo={'/ships'} backToText={'ships'} />
       ) : !ship ? (
-        renderNotFound()
+        <NotFound isDetailsPage={true} />
       ) : (
         <Container size="lg" py="md">
-          <Button 
+         <Button 
             variant="light" 
             leftIcon={<IconArrowLeft size={16} />} 
             onClick={() => navigate('/ships')} 

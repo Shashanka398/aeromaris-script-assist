@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import { 
   Container, 
   Title, 
@@ -11,18 +11,21 @@ import {
   Group, 
   Stack,
   Center,
-  Loader,
-  RingProgress,
   useMantineTheme,
   Button,
   Tabs,
-  ScrollArea
+  ScrollArea,
+  Box
 } from '@mantine/core';
 import { getRockets } from '../../api/spacex';
 import Layout from '../../components/Layout/Layout';
 import CardsCarousel from '../../components/ui-components/CardsCarousel';
+import Loading from '../../components/ui-components/Loading';
 import { Tab } from '@mantine/core/lib/Tabs/Tab/Tab';
 import '../../styles/abstracts/_fonts.scss';
+import { IconBadge4k, IconRocket, IconShip } from '@tabler/icons-react';
+import { useQuery } from '@tanstack/react-query';
+import { notifications } from '@mantine/notifications';
 
 interface Rocket {
   id: string;
@@ -36,96 +39,165 @@ interface Rocket {
 }
 
 export default function RocketsList() {
-  const [rockets, setRockets] = useState<Rocket[]>([]);
-  const [loading, setLoading] = useState(true);
+
+
   const [activeTab, setActiveTab] = useState<string | null>('all');
   const theme = useMantineTheme();
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+   const { data:rockets, isLoading, isError } = useQuery<Rocket[]>(['ships'], async () => {
+      const response = await getRockets();
+      return response.data;
+    });
+   
+ useEffect(() => {
+    if (isError) {
+      notifications.show({
+        title: 'Error while loading rockets!!',
+        message: 'Not able to load rocket listng please try later!!!',
+        radius: 'md',
+        autoClose: 5000
+      });
+    }
+  }, [isError]);
 
-  useEffect(() => {
-    const fetchRockets = async () => {
-      try {
-        const response = await getRockets();
-        setRockets(response.data);
-      } catch (error) {
-        console.error('Error fetching rockets:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
 
-    fetchRockets();
-  }, []);
 
-  const filteredRockets = rockets.filter(rocket => {
+  const filteredRockets = rockets?.filter((rocket) => {
     if (activeTab === 'all') return true;
     if (activeTab === 'active') return rocket.active;
     if (activeTab === 'inactive') return !rocket.active;
     return true;
   });
 
-  if (loading) {
+  if (isLoading) {
     return (
-      <Center h="100vh">
-        <Loader size="xl" />
-      </Center>
+      <Layout>
+        <Box pt={140}>
+          <Container size="xl" pb="xl">
+            <Grid gutter="lg">
+              {[1, 2, 3, 4].map((index) => (
+                <Grid.Col key={index} span={6}>
+                  <Card shadow="sm" padding="lg" radius="md" withBorder>
+                    <Loading />
+                  </Card>
+                </Grid.Col>
+              ))}
+            </Grid>
+          </Container>
+        </Box>
+      </Layout>
     );
   }
 
   return (
     <Layout>
-       
-    <Container size="xl" py="xl">
-       
-      <Title order={1} mb="xl" style={{ fontSize: '$heading1' }}>SpaceX Rockets</Title>
-      <Tabs value={activeTab} onTabChange={setActiveTab} mb="xl">
-        <Tabs.List mb="xl">
-          <Tabs.Tab value="all" style={{ fontSize: '$paragraph1' }}>All Rockets</Tabs.Tab>
-          <Tabs.Tab value="active" style={{ fontSize: '$paragraph1' }}>Active</Tabs.Tab>
-          <Tabs.Tab value="inactive" style={{ fontSize: '$paragraph1' }}>Inactive</Tabs.Tab>
-        </Tabs.List>
-      </Tabs>
-      <Grid gutter="lg">
+     
+      <Box
+        pos="fixed"
+        top={70}
+        left={0}
+        right={0}
+        style={{
+          zIndex: '10',
+          padding: '1rem 0',
+          width:'100%',
+          backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
+          boxShadow: theme.shadows.sm,
+        }}
+      >
+        <Container size="xl">
+          <Stack>
+                     <Group>
+                      <IconRocket size={28} color={theme.colors.brand[6]} />
+            <Title order={2}>  Rockets</Title>
+                     </Group>
+            
+            <Tabs value={activeTab} onTabChange={setActiveTab}>
+              <Tabs.List>
+                <Tabs.Tab value="all" style={{ fontSize: '$paragraph1' }}>
+                  All Rockets
+                </Tabs.Tab>
+                <Tabs.Tab value="active" style={{ fontSize: '$paragraph1' }}>
+                  Active
+                </Tabs.Tab>
+                <Tabs.Tab value="inactive" style={{ fontSize: '$paragraph1' }}>
+                  Inactive
+                </Tabs.Tab>
+              </Tabs.List>
+            </Tabs>
+          </Stack>
+        </Container>
+      </Box>
+
       
-        {filteredRockets.map((rocket) => (
-          <Grid.Col key={rocket.id} span={6}>
-              <Card shadow="sm" padding="lg" radius="md" withBorder style={{ height: '100%', width: '100%' }}>
-      <Card.Section>
-       <CardsCarousel hideTitle={true} items={rocket.flickr_images.slice(0,2).map((img,index)=>{
-        return {
-          title:rocket.name,
-          id:index,
-          image:img
-        }
-       })}/>
-      </Card.Section>
+      <Box pt={140}>
+        <Container size="xl" pb="xl">
+          <Grid grow  gutter="lg">
+            {filteredRockets?.map((rocket) => (
+              <Grid.Col key={rocket.id} span={6}
+              xs={12}  
+              sm={12}   
+               md={6}   
+               lg={6}   
+              >
+                <Card
+                  shadow="sm"
+                  padding="lg"
+                  radius="md"
+                  withBorder
+                  style={{ height: '100%', width: '100%' }}
+                >
+                  <Card.Section>
+                    <CardsCarousel
+                      hideTitle={true}
+                      items={rocket.flickr_images.slice(0, 2).map((img, index) => ({
+                        title: rocket.name,
+                        id: index,
+                        image: img,
+                      }))}
+                    />
+                  </Card.Section>
 
-      <Group position="apart" mt="md" mb="xs">
-        <Text weight={500} style={{ fontSize: '$heading3' }}>{rocket.name}</Text>
-        {rocket.active ?
-          (<Badge color="green" variant="light" style={{ fontSize: '$paragraph3' }}>
-            Active
-        </Badge>):(
-          <Badge color="red" variant="light" style={{ fontSize: '$paragraph3' }}>
-            Inactive
-        </Badge>
-        )
-        }
-        
-      </Group>
+                  <Group position="apart" mt="md" mb="xs">
+                    <Text weight={500} style={{ fontSize: '$heading3' }}>
+                      {rocket.name}
+                    </Text>
+                    {rocket.active ? (
+                      <Badge color="green" variant="light" style={{ fontSize: '$paragraph3' }}>
+                        Active
+                      </Badge>
+                    ) : (
+                      <Badge color="red" variant="light" style={{ fontSize: '$paragraph3' }}>
+                        Inactive
+                      </Badge>
+                    )}
+                  </Group>
 
-      <Text size="sm" color="dimmed" style={{ fontSize: '$paragraph1' , height:'100px' }}>
-       {rocket.description.slice(0,250)+'...'}
-      </Text>
+                  <Text
+                    size="sm"
+                    color="dimmed"
+                    style={{ fontSize: '$paragraph1', height: '100px' }}
+                  >
+                    {rocket.description.slice(0, 250) + '...'}
+                  </Text>
 
-      <Button variant="light" color="blue" fullWidth mt="md" radius="md" style={{ fontSize: '$paragraph2' }} onClick={()=>navigate(`/rocket/${rocket.id}`)}>
-        View Details 
-      </Button>
-    </Card>
-          </Grid.Col>
-        ))}
-      </Grid>
-    </Container>
-        </Layout>
+                  <Button
+                    variant="light"
+                    color="blue"
+                    fullWidth
+                    mt="md"
+                    radius="md"
+                    style={{ fontSize: '$paragraph2' }}
+                    onClick={() => navigate(`/rocket/${rocket.id}`)}
+                  >
+                    View Details
+                  </Button>
+                </Card>
+              </Grid.Col>
+            ))}
+          </Grid>
+        </Container>
+      </Box>
+    </Layout>
   );
-} 
+}

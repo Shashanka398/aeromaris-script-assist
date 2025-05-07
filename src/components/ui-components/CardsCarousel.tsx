@@ -5,14 +5,14 @@ import React from "react";
 import { SPACEX_IMAGES } from "../../utils/constants";
 
 export interface Item{
-    id:number
+    id:Number
     title:string,
     image:string
 }
 interface CardsCarouselProps{
-   items:Item[],hideTitle?:boolean
+   items:Item[],hideTitle?:boolean, imageHiegth?:number
 }
-const CardsCarousel = ({items,hideTitle=false}:CardsCarouselProps) => {
+const CardsCarousel = ({items,hideTitle=false,imageHiegth=400}:CardsCarouselProps) => {
   const theme = useMantineTheme();
   const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
 
@@ -22,7 +22,7 @@ const CardsCarousel = ({items,hideTitle=false}:CardsCarouselProps) => {
         <Card.Section>
           <Image
             src={item.image}
-            height={400}
+            height={imageHiegth}
             fit="cover"
             alt={`AeroSpace Image ${index + 1}`}
           />

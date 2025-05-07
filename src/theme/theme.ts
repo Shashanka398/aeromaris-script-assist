@@ -1,4 +1,4 @@
-import { DefaultMantineColor, MantineThemeOverride } from '@mantine/core';
+import { DefaultMantineColor, MantineThemeOverride, PasswordInput } from '@mantine/core';
 
 
 const baseTheme: MantineThemeOverride = {
@@ -6,12 +6,12 @@ const baseTheme: MantineThemeOverride = {
   primaryShade: 6,
   fontFamily: 'Outfit,sans-serif',
   fontFamilyMonospace: 'Monaco, Courier, monospace',
-  fontSizes: { // 16px
-    xs: '1rem', // 12px
-    sm: '1rem', // 14px
-    md: '1.25rem', // 16px
-    lg: '1.5rem', // 18px
-    xl: '1.8rem' // 20px
+  fontSizes: { 
+    xs: '1rem', 
+    sm: '1rem', 
+    md: '1.25rem', 
+    lg: '1.5rem', 
+    xl: '1.8rem' 
   },
   breakpoints: {
     xs: '30em',
@@ -64,10 +64,22 @@ const baseTheme: MantineThemeOverride = {
       styles: {
         label: {
           fontSize: '1rem',
-          color: '#DCE7FCFF',
+          color: '#868e96',
         },
         input: {
-          borderRadius: '2rem !important',
+          borderRadius: '1rem !important',
+          backgroundColor: '#DCE7FCFF',
+        }
+      }
+    },
+    PasswordInput:{
+styles: {
+        label: {
+          fontSize: '1rem',
+          color: '#868e96',
+        },
+        input: {
+          borderRadius: '1rem !important',
           backgroundColor: '#DCE7FCFF',
         }
       }
@@ -228,6 +240,18 @@ export const darkTheme: MantineThemeOverride = {
         }
       }
     },
+    PasswordInput:{
+styles: {
+        label: {
+          fontSize: '1rem',
+          color: '#DCE7FCFF',
+        },
+        input: {
+          borderRadius: '2rem !important',
+          backgroundColor: '#1d1e30',
+        }
+      }
+    },
     Select: {
       styles: {
         label: {
@@ -312,6 +336,18 @@ export const theme: MantineThemeOverride = {
   },
   components: {
     TextInput: {
+      styles: {
+        label: {
+          fontSize: '1rem',
+          color: '#DCE7FCFF',
+        },
+        input: {
+          borderRadius: '2rem !important',
+          backgroundColor: '#DCE7FCFF',
+        }
+      }
+    },
+    PasswordInput: {
       styles: {
         label: {
           fontSize: '1rem',

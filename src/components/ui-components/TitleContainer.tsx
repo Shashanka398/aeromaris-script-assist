@@ -63,7 +63,7 @@ const TitleContainer=({
             {isLoading ? (
                 <Skeleton height={300} radius="md" />
             ) : (
-                <CardsCarousel items={contextImages}/>
+                <CardsCarousel items={contextImages} imageHiegth={360}/>
             )}
         </Grid.Col>
     );

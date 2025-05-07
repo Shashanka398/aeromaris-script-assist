@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import logo from '../../assets/svgviewer-png-output.png';
 import {
   Header as MantineHeader,
   Container,
@@ -40,24 +41,34 @@ const Header = () => {
   const items = links
     .filter((link) => !link.protected || (link.protected && isAuthenticated))
     .map((link) => (
+       <Group
+        spacing={10}
+        style={{padding:"10px"}}
+        >
       <Link 
         key={link.label} 
         to={link.link} 
         onClick={close} 
         style={{ textDecoration: 'none' }}
       >
-        <Text
+       
+            <Text
           fw={500}
           color={isActive(link.link) ? 'brand.6' : undefined}
           sx={() => ({
             '&:hover': {
               color: theme.colors.brand[6],
+          
             },
           })}
         >
           {link.label}
         </Text>
+
+        
+      
       </Link>
+      </Group>
     ));
 
   return (
@@ -65,7 +76,7 @@ const Header = () => {
       <Container size="xl">
         <Group position="apart" h={HEADER_HEIGHT}>
           <Group>
-            <IconRocket size={30} color={theme.colors.brand[6]} />
+            <img src={logo} alt="Logo" style={{ height: '60px' }} />
             <Link to="/" style={{ textDecoration: 'none' }}>
               <Title
                 order={2}

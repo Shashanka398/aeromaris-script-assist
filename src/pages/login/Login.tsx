@@ -69,10 +69,10 @@ const Login: React.FC = () => {
         <Stack align="center" mb={30}>
           <IconRocket size={48} color={theme.colors.brand[6]} />
           <Title align="center" sx={{ fontWeight: 900 }}>
-            Welcome to SpaceX Ships
+            Welcome to AeroMaris 
           </Title>
           <Text color="dimmed" size="sm" align="center" maw={400}>
-            Enter your credentials to access the SpaceX ships database.
+            Enter your credentials to access the AeroMaris ships database.
             For demo purposes, any valid username and password will work.
           </Text>
         </Stack>

@@ -6,7 +6,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <MantineFooter height={60} p="md">
+    <MantineFooter height={60} p="md" style={{ position: 'relative' }}>
       <Container size="xl">
         <Group position="apart">
           <Text size="sm" color="dimmed">
